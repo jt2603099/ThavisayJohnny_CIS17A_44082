@@ -13,13 +13,16 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <string>
 
 using namespace std;
 
 int main(int argc, char** argv) {
     
-    cout << "Hello world!" << endl;
-    
+    int multiply(int a, int b) {
+        a('0'),b('0');
+    a * b;
+    }
     return 0;
 }
 
