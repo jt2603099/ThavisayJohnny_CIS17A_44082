@@ -89,7 +89,6 @@ void sum(const int array[][COLMAX], int row, int col, int augAry[][COLMAX]) {//S
             totalSum += array[i][j];
         }
         augAry[i][col] = rowSum;
-        //totalSum += rowSum;
     }
     augAry[row][col] = totalSum;
 }
