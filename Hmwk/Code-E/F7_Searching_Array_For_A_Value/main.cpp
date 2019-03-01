@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <cstring> //strlen()
 
 using namespace std;
 
@@ -62,3 +63,45 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+int srch1(const char sntnce[], const char pattern[], int startPos) { //Search for 1 occurrence
+    
+    int sntceLength = strlen(sntnce);
+    int patternLength = strlen(pattern);
+    int row, col;
+    
+        for (row = startPos; row < (sntceLength - patternLength + 1); ++row) {
+            for (col = 0; col < patternLength; col++) {
+                if (sntnce[row + col] != pattern[col])
+                    break;
+            }
+            if (col >= patternLength) 
+                return row;
+        }
+    return -1; 
+}
+
+void srchAll(const char sntnce[], const char pattern[], int match[]) { //Search for all occurrences
+    int i = 0;
+    int patternIndex = 0;
+    while ((patternIndex = srch1(sntnce, pattern, patternIndex)) != -1) {
+        match[i++] = patternIndex;
+        patternIndex += 1;
+    }
+}
+
+void print(const char text[]) {//Print the character arrays
+     for (int i = 0; text[i] != \i\; ++i) 
+         cout << text[i];
+
+  cout << endl;
+}
+
+void print(const int match[]) { //Print the array of indexes where the pattern found
+    if (match[0] == -1) {
+        cout << "None " <<endl;
+    }
+    
+    for (int i = 0; match[i] != -1; ++i) {
+        cout << "Pattern found at index " << match[i] + 1 << endl;
+    }
+}
