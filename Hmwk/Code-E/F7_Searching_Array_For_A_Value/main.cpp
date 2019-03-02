@@ -20,6 +20,7 @@ using namespace std;
 //User Libraries Here
 
 //Global Constants Only, No Global Variables
+const int LINE=81;
 //PI, e, Gravity, or conversions
 
 //Function Prototypes Begins Here
@@ -50,6 +51,8 @@ int main(int argc, char** argv) {
     //Search for the pattern
     //Input the sentence and pattern, Output the matching positions
     //Remember, indexing starts at 0 for arrays.
+    // initialize match array with -1
+    memset(match, -1, sizeof(match));
     srchAll(sntnce,pattern,match);
     
     //Display the inputs and the Outputs
@@ -77,31 +80,30 @@ int srch1(const char sntnce[], const char pattern[], int startPos) { //Search fo
             if (col >= patternLength) 
                 return row;
         }
-    return -1; 
+    return -1; //if no matches are found
 }
 
 void srchAll(const char sntnce[], const char pattern[], int match[]) { //Search for all occurrences
-    int i = 0;
+    int k = 0;
     int patternIndex = 0;
     while ((patternIndex = srch1(sntnce, pattern, patternIndex)) != -1) {
-        match[i++] = patternIndex;
+        match[k++] = patternIndex;
         patternIndex += 1;
     }
 }
 
 void print(const char text[]) {//Print the character arrays
-     for (int i = 0; text[i] != \i\; ++i) 
+     for (int i = 0; text[i] != 0; ++i) 
          cout << text[i];
-
-  cout << endl;
+            cout << endl;
 }
 
 void print(const int match[]) { //Print the array of indexes where the pattern found
-    if (match[0] == -1) {
-        cout << "None " <<endl;
+    if (match[0] == -1) { //srch1 function returns -1 if none is found so we just test it with the first element in the array
+        cout << "None" <<endl;
     }
     
     for (int i = 0; match[i] != -1; ++i) {
-        cout << "Pattern found at index " << match[i] + 1 << endl;
+        cout << match[i] << endl;
     }
 }
