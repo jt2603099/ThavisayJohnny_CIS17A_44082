@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
     cout << "Enter information such as name, hours worked, and rate of pay." <<endl;
     inputPay(employee); //Calculates pay rate
     payToWords(employee); //Converts gross pay to english words
+    //Display the check
+    displayCheck(employee); 
     
     delete[] employee;
     return 0;
@@ -110,14 +112,14 @@ void payToWords(Pay *e) {
     string hunThous[10] = {"", "One Hundred ", "Two Hundred ", "Three Hundred ", "Four Hundred ", "Five Hundred ",
                            "Six Hundred ", "Seven Hundred ", "Eight Hundred ", "Nine Hundred "};
     string tenThous[10] = {"", "", "Twenty ", "Thirty ", "Forty ", "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "};
-    string Thous[10] = {"", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "};
-    string THOUSAND[2] = {"", "Thousand, "};
-    string Hundred[10] = {"", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "};
-    string HUNDRED[2] = {"", " Hundred, "};
+    string Thous[10] = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+    string THOUSAND[2] = {"", " Thousand "};
+    string Hundred[10] = {"", "One Hundred ", "Two Hundred ", "Three Hundred ", "Four Hundred ", "Five Hundred ", "Six Hundred ", "Seven Hundred ", "Eight Hundred ", "Nine Hundred "};
+    //string HUNDRED[2] = {"", " Hundred, "};
     string Tens[10] = {"", "", "Twenty ", "Thirty ", "Forty ", "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "};
     string Ones[10] = {"", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "};
-    string TENTHOUSAND = "", TEEN = "";
-    int convThousands(0), convHundreds(0), HUN_THOUSANDPLACE, TEN_THOUSANDPLACE, THOUSANDSPLACE, HUN_PLACE, TENS_PLACE(0), ONES_PLACE(0), 
+    string TENTHOUSAND = "";
+    int convThousands(0), convHundreds(0), HUN_THOUSANDPLACE(0), TEN_THOUSANDPLACE(0), THOUSANDSPLACE(0), HUN_PLACE(0), TENS_PLACE(0), ONES_PLACE(0), 
         SHOW_T, SHOW_H;
     
     //Thousands place digits
@@ -139,7 +141,7 @@ void payToWords(Pay *e) {
     if ((convThousands % 100) >= 10 && (convThousands % 100) <= 19) {
         TEN_THOUSANDPLACE = convThousands % 100;
         switch (TEN_THOUSANDPLACE) {
-            case '1':
+            case 10:
                 TENTHOUSAND = "Ten";
                 break;
             case 11:
@@ -171,17 +173,19 @@ void payToWords(Pay *e) {
                 break;
         }
     }
-    //Find thousand
+    //Find thousands place digit
     if (convThousands >= 1) {
-        THOUSANDSPLACE = convThousands % 10;
         if (e->amount >= 1000 && e->amount <= 9999) {
-            THOUSANDSPLACE = convThousands / 1000;
+            THOUSANDSPLACE = e->amount / 1000;
         }
+            if (convThousands <= 9) {
+                THOUSANDSPLACE = convThousands;
+            }
     }
     
     //Hundreds, tens, ones digit
     if (e->amount >= 1000) {
-        convHundreds = e->amount % 1000;
+        convHundreds = e->amount - (convThousands * 1000);
     } else if (e->amount <= 999) {
         convHundreds = e->amount;
     }
@@ -198,8 +202,16 @@ void payToWords(Pay *e) {
         }
     }
     //Find ones
+    if (convHundreds >= 10) {
+        ONES_PLACE = convHundreds % 10;
+    } else if (convHundreds <= 9) {
+        ONES_PLACE = convHundreds;
+    }
     
-    cout << "$" << e->amount <<endl;
+    //Numeric Values in Words
+    //Test
+    //cout << "$" << e->amount <<endl;
+    cout << convThousands <<endl;
     cout << THOUSANDSPLACE <<endl;
     //Show Thousands or Hundreds Numeric Value
     if (convThousands > 0) {
@@ -208,10 +220,31 @@ void payToWords(Pay *e) {
     if (convHundreds > 0) {
         SHOW_H = 1;
     }
-    if (e->amount >= 111000 && e->amount <=  119999) {
-    cout << hunThous[HUN_THOUSANDPLACE] << TENTHOUSAND << THOUSAND[SHOW_T] << Hundred[HUN_PLACE] <<endl;
+    if ((e->amount >= 111000 && e->amount <=  119999)) {
+    e->amountWords = hunThous[HUN_THOUSANDPLACE] + TENTHOUSAND + THOUSAND[SHOW_T] + Hundred[HUN_PLACE] + Tens[TENS_PLACE] + Ones[ONES_PLACE];
     }
     if (convThousands >= 120 && convThousands <= 999) {
-    cout << hunThous[HUN_THOUSANDPLACE] << tenThous[TEN_THOUSANDPLACE] << Thous[THOUSANDSPLACE] << THOUSAND[SHOW_T] <<endl;
+    e->amountWords = hunThous[HUN_THOUSANDPLACE] + tenThous[TEN_THOUSANDPLACE] + Thous[THOUSANDSPLACE] + THOUSAND[SHOW_T] + Hundred[HUN_PLACE] + 
+                     Tens[TENS_PLACE] + Ones[ONES_PLACE];
     }
+    if (e->amount >= 10000 && e->amount <= 19999) {
+        e->amountWords = TENTHOUSAND + THOUSAND[SHOW_T] + Hundred[HUN_PLACE] + Tens[TENS_PLACE] + Ones[ONES_PLACE];
+    }
+    if (e->amount >= 1000 && e->amount <= 9999) {
+        e->amountWords = Thous[THOUSANDSPLACE] + THOUSAND[SHOW_T] + Hundred[HUN_PLACE] + Tens[TENS_PLACE] + Ones[ONES_PLACE];
+    }
+    if (e->amount <= 999) {
+        e->amountWords = Hundred[HUN_PLACE] + Tens[TENS_PLACE] + Ones[ONES_PLACE];
+    }
+}
+
+void displayCheck(Pay *e) {
+    cout << "Test Company Inc." <<endl;
+    cout << "123 Company Ln." <<endl;
+    cout << endl;
+    cout << "Pay To The         " << e->name <<endl;
+    cout << " Order Of _______________________________________________________________________________________________  $ " << e->amount <<endl;
+    cout << endl;
+    cout << e->amountWords <<endl;
+    cout << "____________________________________________________________________________________________________________________________________________________" <<endl;
 }
