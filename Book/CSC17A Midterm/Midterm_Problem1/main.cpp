@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     //Declare variables
     int numOfChecks, numOfDeposits;
     Bank *User = nullptr;
-    User = new (nothrow) Bank[31];
+    User = new Bank[31];
     
     //Get user's basic account info
     cout << "Enter your account name, address, and account number." <<endl;
