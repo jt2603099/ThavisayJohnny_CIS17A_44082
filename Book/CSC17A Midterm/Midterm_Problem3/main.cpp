@@ -57,13 +57,14 @@ Stats *stat(const Array *);     //Find & store mean, median, & modes in structur
 //Execution begins here
 int main(int argc, char*argv[]) {
     //Declare variables and fill
-    int arySize=8;//Array Size
+    int arySize=31;//Array Size
     int modNum=10; //Number to control the modes (digits 0 to 9 allowed)
     Array *array=fillAry(arySize,modNum);
     
     //Print the initial array
     cout<<"Original Array"<<endl;
     prntAry(array,10);
+    cout << "Array size " << array->data[10]<<endl;
     
     //Calculate some of the statistics
     Stats *stats=stat(array);
@@ -158,13 +159,49 @@ Array *fillAry(int n, int modNum){
 
 Stats *stat(const Array *array){
     //Non-working stub to be completed by the student
-    cout<<endl<<"stat function to be completed by the student"<<endl;
+    float average(0), temp(0), even1(1), even2(1);
+    int number = array->data[0], modeFreq(1), numModes(0), count(1);
     Stats *stats=new Stats;
-    stats->mode=new Array;
+    //Find Average
+    for (int i = 0; i < array->size; i++) {
+        temp += array->data[i];
+        average = temp / array->size;
+        stats->avg = average;
+    }
+    //Find Median
+    //If (array has odd # of elements, median is in the middle
+    if (array->size % 2 == 0) {
+        even2 = array->data[10/2];
+        even1 = array->data[(10/2)-1];
+        stats->median = (even1 + even2) * 0.5;
+        if (array->size < 10) {
+            even2 = array->data[array->size/2];
+            even1 = array->data[(array->size/2)-1];
+            stats->median = (even1 + even2) * 0.5;
+        }
+    } else {
+        temp = array->data[(10/2)-1];
+        stats->median = temp;
+        
+    }
+    //Find 
+    for (int i = 1; i < array->size; i++) {
+        if (array->data[i] == number) {
+            //Count how many times current number occurred
+            count++;
+            //if number count is higher than 1 (default) change it to the highest
+        } else {
+            if (count > modeFreq) {
+                    count = modeFreq;
+                    stats->modFreq = modeFreq;
+            }
+            count = 1; //reset mode frequency counter
+            number = array->data[i];
+            }
+        }
+    //stats->mode=new Array;
     stats->mode->size=0;
     int nModes=0;
-    stats->mode->data=new int[nModes];
-    stats->modFreq=1;
-    stats->median=0;
+    //stats->mode->data=new int[nModes];
     return stats;
 }
