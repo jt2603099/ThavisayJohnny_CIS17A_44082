@@ -94,6 +94,10 @@ void inputPay(Pay *e) {
             cout << "Enter a valid number: ";
             cin >> e->rate;
         }
+    //Driver program
+    //e->name = "Johnny Lo";
+    //e->hours = 30;
+    //e->rate = 4733;
     //Calculate pay, 0-40 flat, 40-50 2x, >50 3x
     if (e->hours <= 40) {
         total = e->hours * e->rate;
@@ -175,12 +179,11 @@ void payToWords(Pay *e) {
     }
     //Find thousands place digit
     if (convThousands >= 1) {
-        if (e->amount >= 1000 && e->amount <= 9999) {
-            THOUSANDSPLACE = e->amount / 1000;
+        if (convThousands >= 10) {
+            THOUSANDSPLACE = convThousands % 10;
+        } else if (convThousands <= 9) {
+            THOUSANDSPLACE = convThousands;
         }
-            if (convThousands <= 9) {
-                THOUSANDSPLACE = convThousands;
-            }
     }
     
     //Hundreds, tens, ones digit
@@ -211,8 +214,8 @@ void payToWords(Pay *e) {
     //Numeric Values in Words
     //Test
     //cout << "$" << e->amount <<endl;
-    cout << convThousands <<endl;
-    cout << THOUSANDSPLACE <<endl;
+    //cout << convThousands <<endl;
+    //cout << THOUSANDSPLACE <<endl;
     //Show Thousands or Hundreds Numeric Value
     if (convThousands > 0) {
         SHOW_T = 1;
