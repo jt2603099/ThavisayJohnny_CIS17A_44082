@@ -57,14 +57,14 @@ Stats *stat(const Array *);     //Find & store mean, median, & modes in structur
 //Execution begins here
 int main(int argc, char*argv[]) {
     //Declare variables and fill
-    int arySize=31;//Array Size
+    int arySize=39;//Array Size
     int modNum=10; //Number to control the modes (digits 0 to 9 allowed)
     Array *array=fillAry(arySize,modNum);
     
     //Print the initial array
     cout<<"Original Array"<<endl;
     prntAry(array,10);
-    cout << "Array size " << array->data[10]<<endl;
+    //cout << "Array size " << array->size<<endl;
     
     //Calculate some of the statistics
     Stats *stats=stat(array);
@@ -160,8 +160,13 @@ Array *fillAry(int n, int modNum){
 Stats *stat(const Array *array){
     //Non-working stub to be completed by the student
     float average(0), temp(0), even1(1), even2(1);
-    int number = array->data[0], modeFreq(1), numModes(0), count(1);
+    int number = array->data[0], //number is the first element in the array then it increases and iterates until it's done
+                 modeFreq(1), //modeFreq is Max Frequency
+                 count(0),
+                 nModes(0), x(0);
     Stats *stats=new Stats;
+    stats->mode=new Array;
+    stats->mode->data=new int[nModes];
     //Find Average
     for (int i = 0; i < array->size; i++) {
         temp += array->data[i];
@@ -184,24 +189,30 @@ Stats *stat(const Array *array){
         stats->median = temp;
         
     }
-    //Find 
-    for (int i = 1; i < array->size; i++) {
-        if (array->data[i] == number) {
-            //Count how many times current number occurred
-            count++;
-            //if number count is higher than 1 (default) change it to the highest
-        } else {
-            if (count > modeFreq) {
-                    count = modeFreq;
-                    stats->modFreq = modeFreq;
-            }
-            count = 1; //reset mode frequency counter
-            number = array->data[i];
+    //Find modes
+    //find single mode
+    //loop to find multiple modes
+        //Find which elements count = to the most frequented number (modeFreq)
+        //elements that = modeFreq should be put into "mode set"
+    //start from beginning of the array
+    for (int i = 0; i < array->size; i++) {
+        for (int j = 0; j < array->size; j++) {
+            if (array->data[i] == array->data[j]) {
+                count++; //if current element matches the next one
             }
         }
-    //stats->mode=new Array;
-    stats->mode->size=0;
-    int nModes=0;
-    //stats->mode->data=new int[nModes];
+        //change modeFreq if count is higher after iterating
+        if (count > modeFreq) {
+                    modeFreq = count;
+                    nModes++;
+                    stats->mode->data[x++] = array->data[i];
+                }
+
+        //reset count to 1 at the end of the loop
+        count = 0;
+    }
+  
+    stats->modFreq = modeFreq;
+    stats->mode->size = nModes;
     return stats;
 }
