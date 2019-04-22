@@ -29,11 +29,53 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <string>
 
 using namespace std;
 
-int main(int argc, char** argv) {
+const int SIZE = 15;
 
+void getFactorial(string name[], int byte[], unsigned long long int value[]);
+
+int main(int argc, char** argv) {
+    string DataTypes[SIZE] = {"short int", "unsigned short int", "unsigned int", "int", "long int", "unsigned long int", "long long int", "unsigned long long int",
+                              "signed char", "unsigned char", "float", "double", "long double", "wchar_t", "wchar_t"};
+    int DataBytes[SIZE] = {2, 2, 4, 4, 4, 4, 8, 8, 1, 1, 4, 8, 12, 2, 4};
+    unsigned long long int Values[SIZE] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    getFactorial(DataTypes, DataBytes, Values);
+    
+    /*for (int i = 0; i < SIZE; i++) {
+        cout << Values[i] << " ";
+    }*/
+    
     return 0;
 }
 
+void getFactorial(string name[], int byte[], unsigned long long int value[]) {
+    int f = 0;
+    string biggestName;
+    unsigned long long int factorial = 1,
+                           biggestValue = 0;
+    
+    for (int i = 0; i < SIZE; i++) {
+        f = byte[i];
+            for (int k = 1; k <= f; k++) {
+                factorial *= k;
+            }
+        value[i] = factorial;
+        //Reset factorial value to calculate next byte in the array
+        factorial = 1;
+    }
+    
+    //Compare the value of each byte to determine highest value
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (value[i] < value[j]) {
+                biggestName = name[j];
+                biggestValue = value[j];
+            }
+        }
+    }
+    cout << "The Data Type with the largest value factorial is ";
+    cout << biggestName << " with a value at " << biggestValue;
+}
