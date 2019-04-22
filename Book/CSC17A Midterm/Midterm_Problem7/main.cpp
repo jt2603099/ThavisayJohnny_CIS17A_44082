@@ -29,11 +29,50 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
-int main(int argc, char** argv) {
+struct Prime {
+    unsigned char prime;
+    unsigned char power;
+};
 
+struct Primes{
+    Prime *prime;
+    unsigned char nPrimes;
+};
+
+void prntPrm(Primes *); //Output all prime factors
+
+int main(int argc, char** argv) {
+    Primes *factor = nullptr;
+    Primes number;
+    factor = &number;
+    
+    prntPrm(factor);
     return 0;
+}
+
+void prntPrm(Primes *number) {
+    cout << "Enter number to factor: ";
+    int k;
+    cin >> k;
+    cout << k << " = ";
+    
+    while (k % 2 == 0) {
+        cout << 2 << " ";
+        k /= 2;
+    }
+    //Composite numbers
+    for (int i = 3; i < k; i++) {
+        if (k % i == 0) {
+            cout << i << " "; 
+        }
+        k /= i;
+    }
+    if (k > 1) {
+        //cout << k;
+    }
 }
 
