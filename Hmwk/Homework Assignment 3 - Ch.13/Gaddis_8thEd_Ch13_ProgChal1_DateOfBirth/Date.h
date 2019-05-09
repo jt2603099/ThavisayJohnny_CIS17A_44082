@@ -25,7 +25,7 @@ private:
     string MONTH[12] = {"January", "February", "March", "April", "May", "June",
                         "July", "August", "September", "October", "November", "December"};
 public:
-    //accessors / setter functions
+    //accessors / getter functions
     int getMonth() const {
         return month;
     }
@@ -35,7 +35,7 @@ public:
     int getYear() const {
         return year;
     }
-    //mutators / getter functions
+    //mutators / setter functions
     Date(); //Constructor
     Date(int, int, int);
     int setMonth(int);
